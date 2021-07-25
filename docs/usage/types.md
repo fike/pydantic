@@ -571,24 +571,9 @@ _(This script is complete, it should run "as is")_
 For URI/URL validation the following types are available:
 
 - `AnyUrl`: any scheme allowed, TLD not required
-<<<<<<< HEAD
-<<<<<<< HEAD
 - `AnyHttpUrl`: scheme `http` or `https`, TLD not required
 - `HttpUrl`: scheme `http` or `https`, TLD required, max length 2083
-<<<<<<< HEAD
-- `PostgresDsn`: scheme `postgres`, `postgresql`, user info required, TLD not required. Also, it's supported DBAPI dialects:
-=======
-- `AnyHttpUrl`: schema `http` or `https`, TLD not required
-- `HttpUrl`: schema `http` or `https`, TLD required, max length 2083
-=======
-- `AnyHttpUrl`: scheme `http` or `https`, TLD not required
-- `HttpUrl`: scheme `http` or `https`, TLD required, max length 2083
->>>>>>> 9a8641e... Fixed typo by @samuelcolvin
-- `PostgresDsn`: scheme `postgres`, `postgresql`, user info required, TLD not required. Also, its supported DBAPI dialects:
->>>>>>> e9013b9... fix typo by PrettyWood
-=======
 - `PostgresDsn`: scheme `postgres`, `postgresql`, user info required, TLD not required. Also, it´s supported DBAPI dialects:
->>>>>>> 8c1255a... fixed typo
   - `postgresql+psycopg2`
   - `postgresql+asyncpg`
   - `postgresql+pg8000`

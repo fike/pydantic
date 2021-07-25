@@ -1,2 +1,1 @@
-* Added postgresql+asyncpg schema for PostgresDsn
-* Added postgresql+pg8000 schema for PostgresDsn
+Add `postgresql+asyncpg` and `postgresql+pg8000` schemes for `PostgresDsn`

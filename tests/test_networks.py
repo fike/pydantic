@@ -329,26 +329,36 @@ def test_parses_tld(input, output):
     assert Model(v=input).v.tld == output
 
 
-def test_postgres_dsns():
+@pytest.mark.parametrize(
+    'scheme, expected',
+    [
+        ('postgres', 'postgres://user:pass@localhost:5432/app'),
+        ('postgresql', 'postgresql://user:pass@localhost:5432/app'),
+        ('postgresql+asyncpg', 'postgresql+asyncpg://user:pass@localhost:5432/app'),
+        ('postgresql+pg8000', 'postgresql+pg8000://user:pass@localhost:5432/app'),
+        ('postgresql+psycopg2cffi', 'postgresql+psycopg2cffi://user:pass@localhost:5432/app'),
+        ('postgresql+py-postgresql', 'postgresql+py-postgresql://user:pass@localhost:5432/app'),
+        ('postgresql+pygresql', 'postgresql+pygresql://user:pass@localhost:5432/app'),
+    ],
+)
+def test_postgres_dsns(scheme, expected):
     class Model(BaseModel):
-        a: PostgresDsn
+        pg_dsn: PostgresDsn
 
-    assert Model(a='postgres://user:pass@localhost:5432/app').a == 'postgres://user:pass@localhost:5432/app'
-    assert Model(a='postgresql://user:pass@localhost:5432/app').a == 'postgresql://user:pass@localhost:5432/app'
-    assert (
-        Model(a='postgresql+asyncpg://user:pass@localhost:5432/app').a
-        == 'postgresql+asyncpg://user:pass@localhost:5432/app'
-    )
-
+    assert Model(pg_dsn=scheme + '://user:pass@localhost:5432/app').pg_dsn == expected
     with pytest.raises(ValidationError) as exc_info:
-        Model(a='http://example.org')
+        Model(pg_dsn='http://example.org')
     assert exc_info.value.errors()[0]['type'] == 'value_error.url.scheme'
     assert exc_info.value.json().startswith('[')
 
     with pytest.raises(ValidationError) as exc_info:
-        Model(a='postgres://localhost:5432/app')
+        Model(pg_dsn=scheme + '://localhost:5432/app')
     error = exc_info.value.errors()[0]
-    assert error == {'loc': ('a',), 'msg': 'userinfo required in URL but missing', 'type': 'value_error.url.userinfo'}
+    assert error == {
+        'loc': ('pg_dsn',),
+        'msg': 'userinfo required in URL but missing',
+        'type': 'value_error.url.userinfo',
+    }
 
 
 def test_redis_dsns():
